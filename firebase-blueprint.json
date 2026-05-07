@@ -1,0 +1,90 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Stores farmer and trader profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["farmer", "trader"] },
+        "district": { "type": "string" },
+        "preferredLanguage": { "type": "string", "enum": ["en", "te"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Point": {
+      "title": "Coordinate",
+      "description": "Normalized coordinates on the image (0-100)",
+      "type": "object",
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" }
+      },
+      "required": ["x", "y"]
+    },
+    "Asset": {
+      "title": "Map Asset",
+      "description": "A drawn asset on the farm map",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["polygon", "line", "point"] },
+        "points": { "type": "array", "items": { "$ref": "Point" } },
+        "label": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "type", "points", "label", "createdAt"]
+    },
+    "Farm": {
+      "title": "Farm Meta",
+      "description": "Satellite monitored farm details",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string" },
+        "name": { "type": "string" },
+        "area": { "type": "number" },
+        "cropType": { "type": "string" },
+        "soilType": { "type": "string" },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "ndviScore": { "type": "number" },
+        "boundary": { "type": "array", "items": { "$ref": "Point" } },
+        "boundaryUpdatedAt": { "type": "string", "format": "date-time" },
+        "assets": { "type": "array", "items": { "$ref": "Asset" } },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "name", "cropType"]
+    },
+    "Alert": {
+      "title": "Notification Alert",
+      "description": "User specific alerts",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "body": { "type": "string" },
+        "type": { "type": "string", "enum": ["success", "warning", "danger"] },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "body", "type"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Top-level user profiles"
+    },
+    "/farms/{farmId}": {
+      "schema": "Farm",
+      "description": "Satellite monitored farms"
+    },
+    "/alerts/{alertId}": {
+      "schema": "Alert",
+      "description": "System generated alerts for users"
+    }
+  }
+}

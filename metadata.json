@@ -1,0 +1,13 @@
+{
+  "name": "Remix: AgriSight AI",
+  "description": "Predict. Grow. Profit. The next-generation AgriTech intelligence platform for India.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "AI Predictive Analytics",
+    "Satellite Intelligence",
+    "NDVI Analysis",
+    "Weather Forecasting"
+  ]
+}
